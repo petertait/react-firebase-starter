@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Route, BrowserRouter, Link, Switch } from 'react-router-dom'
@@ -16,6 +17,7 @@ export default class App extends Component {
     authed: false,
     loading: true,
   }
+
   componentDidMount () {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
@@ -31,15 +33,19 @@ export default class App extends Component {
       }
     })
   }
+
   componentWillUnmount () {
     this.removeListener()
   }
+
   render() {
+    console.log(firebase.auth().currentUser)
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
         <div>
           <nav className="navbar navbar-default navbar-static-top">
             <div className="container">
+              {this.state.authed ? this.state.authed.currentUser : 'no' }
               <div className="navbar-header">
                 <Link to="/" className="navbar-brand">React Router + Firebase Auth</Link>
               </div>
@@ -79,6 +85,6 @@ export default class App extends Component {
           </div>
         </div>
       </BrowserRouter>
-    );
+    )
   }
 }
