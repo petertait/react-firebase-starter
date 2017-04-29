@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ref, firebaseAuth } from '../../config/constants'
+import { ref, firebaseAuth } from '../../config/firebase'
 
 export default class Dashboard extends Component {
   constructor() {

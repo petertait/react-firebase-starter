@@ -1,1 +1,1 @@
-import { db,  firebaseAuth } from '../../config/constants'
+import { db,  firebaseAuth } from '../../config/firebase'

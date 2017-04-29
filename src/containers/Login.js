@@ -1,50 +1,127 @@
 import React, { Component } from 'react'
+import { observer } from 'mobx-react'
 import { login, resetPassword } from '../api/auth'
 
-function setErrorMsg(error) {
-  return {
-    loginMessage: error
+class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: '',
+      inProgress: null,
+      localError: null
+    }
+    this.resetState = this.resetState.bind(this)
   }
-}
 
-export default class Login extends Component {
-  state = { loginMessage: null }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    login(this.email.value, this.pw.value)
-      .catch((error) => {
-          this.setState(setErrorMsg('Invalid username/password.'))
-        })
+  //componentWillMount/Unmount - not used here, but can use these for routing on auth changes
+  componentWillMount() {
+    const {stores} = this.props
+    const {authStore} = stores
+    this.unwatchAuth = authStore.watchAuth(user => {
+     console.log('watchAuth got user? ' + (user?'true':'false') + ': can perform an imperative action (for example, route to login if user is null)')
+    }, error => {
+      console.log('watchAuth error: ' + JSON.stringify(error))
+    })
   }
-  resetPassword = () => {
-    resetPassword(this.email.value)
-      .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
-      .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
+  componentWillUnmount() {
+    if (this.unwatchAuth) {
+      this.unwatchAuth()
+      this.unwatchAuth = null
+    }
   }
-  render () {
+
+  resetState() {
+    this.setState({
+      localError: null,
+      inProgress: null,
+      password: ''
+    })
+  }
+
+  register() {
+    const {email, password} = this.state
+    if (!email || !password) {
+      this.setState({
+        localError: 'Enter email and password'
+      })
+      return
+    }
+    const {stores} = this.props
+    const {authStore} = stores
+    this.setState({inProgress: 'Registering...'}, () => {
+      authStore.createUser({
+        email,
+        password
+      }).then(this.resetState).catch(this.resetState)
+    })
+  }
+
+  login() {
+    const {email, password} = this.state
+    if (!email || !password) {
+      this.setState({
+        localError: 'Enter email and password'
+      })
+      return
+    }
+    const {stores} = this.props
+    const {authStore} = stores
+    this.setState({inProgress: 'Logging In...'}, () => {
+      authStore.signIn({
+        email,
+        password
+      }).then(this.resetState).catch(this.resetState)
+    })
+  }
+
+  logout() {
+    const {stores} = this.props
+    const {authStore} = stores
+
+    this.setState({inProgress: 'Logging Out...'}, () => {
+      authStore.signOut().then(this.resetState).catch(this.resetState)
+    })
+  }
+
+  renderLoginForm() {
+    const {email, password} = this.state
     return (
-      <div className="col-sm-6 col-sm-offset-3">
-        <h1> Login </h1>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
-          </div>
-          {
-            this.state.loginMessage &&
-            <div className="alert alert-danger" role="alert">
-              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-              <span className="sr-only">Error:</span>
-              &nbsp;{this.state.loginMessage} <a href="#" onClick={this.resetPassword} className="alert-link">Forgot Password?</a>
-            </div>
-          }
-          <button type="submit" className="btn btn-primary">Login</button>
-        </form>
+      <div>
+        <input value={email} onChange={e=>this.setState({email: e.target.value})} placeholder='email'/>
+        <input value={password} onChange={e=>this.setState({password: e.target.value})} placeholder='password' type='password'/>
+        <button onClick={() => this.login()}>Login</button>
+        <button onClick={() => this.register()}>Register</button>
+      </div>
+    )
+  }
+  renderLogoutButton() {
+    return (
+      <div>
+        <button onClick={() => this.logout()}>Log Out</button>
+      </div>
+    )
+  }
+
+  render() {
+    const {localError, inProgress} = this.state
+    const {stores} = this.props
+    const {authStore} = stores
+
+    const authUser = authStore.authUser()
+    const authError = authStore.authError()
+
+    return (
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+        {inProgress && <div>{inProgress}</div> }
+        {localError && <div style={{backgroundColor:'red'}}>{localError}</div> }
+        {authError && <div style={{backgroundColor:'red'}}>API Error: {JSON.stringify(authError)}</div> }
+        {authUser && <div>Signed in as {authUser.email}</div> }
+        {!authUser && this.renderLoginForm() }
+        {authUser && this.renderLogoutButton()}
       </div>
     )
   }
 }
+
+export default observer(Login)
