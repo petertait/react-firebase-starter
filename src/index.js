@@ -1,29 +1,41 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  Router,
-  Route,
-  browserHistory,
-  IndexRoute,
-  Redirect
-} from 'react-router'
+import './index.css'
+import { browserHistory, Route, Router, IndexRoute } from 'react-router'
+
+import { stores } from './stores/stores'
 import { Provider } from 'mobx-react'
 
-import App from './containers/App'
+import App from './App'
 import Home from './containers/Home'
-import Error from './containers/Error'
+import QueryUsers from './containers/QueryUsers'
+import QueryStuff from './containers/QueryStuff'
 
-import authStore from './stores/authStore'
-const stores = { authStore }
+/**
+ * used as a guard to prevent users from accessing
+ * secure routes
+ *
+ * @param nextState
+ * @param replaceState
+ */
+function checkAuth(nextState, replaceState) {
+  let {firebaseStore} = stores
+  if (nextState.location.pathname === '/') return
+  if (firebaseStore.user === null) {
+    replaceState('/')
+  }
+}
 
-ReactDOM.render((
-  <Provider {...stores}>
+ReactDOM.render(
+  <Provider {...stores} >
     <Router history={browserHistory}>
-      <Route path='/' component={App}>
-        <IndexRoute component={Home} />
-        <Route path='/error' component={Error} />
-        <Redirect from='*' to='/error' />
+      <Route path="/" component={App}>
+        <IndexRoute component={Home}/>
+        <Route onEnter={checkAuth}>
+          <Route path="/query-users" component={QueryUsers}/>
+          <Route path="/query-stuff" component={QueryStuff}/>
+        </Route>
       </Route>
     </Router>
-  </Provider>
-), document.getElementById('root'))
+  </Provider>, document.getElementById('root')
+)

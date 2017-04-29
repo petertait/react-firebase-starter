@@ -1,17 +1,9 @@
-# Auth with React Router V4 and Firebase V3
-This is an example repo for authenticating with Firebase and React Router.
+#react-mobx-app
+**Sample Application using [MobX](https://github.com/mobxjs/mobx) to simplify working with [Redux](https://github.com/reactjs/redux) for state management in your [React](https://facebook.github.io/react/) application**
+- How to use [randomuser.me](https://randomuser.me/) to make an async request to load data
+- How to use [Firebase](http://www.firebase.com/) to make async query and to show how to add items
+- Simple integration of [react-router](https://github.com/ReactTraining/react-router)
+- multiple stores utilized in example
+- incorporated [mobx-react-devtools](https://github.com/mobxjs/mobx-react-devtools)
 
-*Using React 15.4.0, React Router 4, and Firebase 3.6.1*
-
-#### Features:
-* Protected Routes with React Router
-* Register new users with Firebase
-* Add new users to ```/users``` in your Firebase database
-* Login/Logout Functionality
-* Simple Boostrap UI
-
-#### Instructions:
-* Swap out the firebase config in ```config/constants``` with your own
-* ```npm install```
-* ```npm start```
-* Visit ```localhost:3000```
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
