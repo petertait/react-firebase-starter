@@ -1,4 +1,3 @@
-import firebase from 'firebase'
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Route, BrowserRouter, Link, Switch } from 'react-router-dom'
@@ -39,7 +38,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log(firebase.auth().currentUser)
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
         <div>
