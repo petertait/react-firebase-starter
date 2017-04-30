@@ -1,21 +1,23 @@
 {
-  "name": "react-router-firebase-auth",
+  "name": "react-firebase-starter",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "custom-react-scripts": "0.0.21"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "firebase": "^3.6.1",
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0",
-    "react-router-dom": "^4.1.1"
+    "firebase": "^3.6.9",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router-dom": "^4.1.1",
+    "mobx": "^3.0.2",
+    "mobx-react": "^4.1.0",
+    "styled-components": "^1.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom"
   }
 }
