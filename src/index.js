@@ -16,14 +16,14 @@ function checkAuth(nextState, replaceState) {
 ReactDOM.render(
   // stores loaded up from state/stores.js
   <Provider {...stores} >
-      <Router history={browserHistory}>
-          <Route path="/" component={Root}>
-              <IndexRoute component={App}/>
-              <Route onEnter={checkAuth}>
-                  <Route path="/query-users" component={QueryUsers}/>
-                  <Route path="/query-stuff" component={QueryStuff}/>
-              </Route>
-          </Route>
-      </Router>
+    <Router history={browserHistory}>
+      <Route path="/" component={Root}>
+        <IndexRoute component={App}/>
+        <Route onEnter={checkAuth}>
+          <Route path="/query-users" component={QueryUsers}/>
+          <Route path="/query-stuff" component={QueryStuff}/>
+        </Route>
+      </Route>
+    </Router>
   </Provider>, document.getElementById('root')
 )
