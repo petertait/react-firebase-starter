@@ -1,12 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
-import { browserHistory, Route, Router, IndexRoute } from 'react-router'
+import { browserHistory, Route, Router, IndexRoute, Redirect } from 'react-router'
 
 import { stores } from './stores/stores'
 import { Provider } from 'mobx-react'
 
-import App from './App'
+import App from './containers/App'
 import Home from './containers/Home'
 import QueryUsers from './containers/QueryUsers'
 import QueryStuff from './containers/QueryStuff'
@@ -34,6 +33,8 @@ ReactDOM.render(
         <Route onEnter={checkAuth}>
           <Route path="/query-users" component={QueryUsers}/>
           <Route path="/query-stuff" component={QueryStuff}/>
+          <Route path='/error' component={Home} />
+          <Redirect from='*' to='/error' />
         </Route>
       </Route>
     </Router>
