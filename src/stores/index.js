@@ -9,3 +9,5 @@ firebase.initializeApp({
 export const db = firebase.database()
 export const ref = firebase.database().ref()
 export const auth = firebase.auth()
+
+export { default as authStore } from './authStore'

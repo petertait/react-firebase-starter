@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { auth } from '../api/auth'
+import { auth } from '../stores'
 
 function setErrorMsg(error) {
   return {
@@ -11,7 +11,7 @@ export default class Register extends Component {
   state = { registerError: null }
   handleSubmit = (e) => {
     e.preventDefault()
-    auth(this.email.value, this.pw.value)
+    auth(this.email.value, this.password.value)
       .catch(e => this.setState(setErrorMsg(e)))
   }
   render () {
@@ -25,7 +25,7 @@ export default class Register extends Component {
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            <input type="password" className="form-control" placeholder="Password" ref={(password) => this.password = password} />
           </div>
           {
             this.state.registerError &&

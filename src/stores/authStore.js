@@ -1,10 +1,9 @@
-import firebase from 'firebase'
 import { observable, computed } from 'mobx'
-import { auth, ref } from '../config/firebase'
+import { auth, ref } from '../stores'
 
-let authStore = null
+let store = null
 
-export default class authStore {
+class Store {
   @observable user = null
   @observable authIsPending = true
 
@@ -55,4 +54,11 @@ export default class authStore {
   @computed get isAuthenticated() {
     return !!this.user
   }
+}
+
+export default function getStore () {
+  if (store === null) {
+    store = new Store()
+  }
+  return store
 }
