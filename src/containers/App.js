@@ -15,14 +15,11 @@ export default class App extends Component {
 		super(props)
 
     this.authStore = new AuthStore()
+
     this.store = {
       authStore: this.authStore
     }
 	}
-
-  componentWillUnmount() {
-    this.store.authStore.cleanup()
-  }
 
   render() {
     return (
