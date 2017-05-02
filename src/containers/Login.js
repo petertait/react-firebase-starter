@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
+import Head from '../components/Head'
 
 function setErrorMsg(error) {
   return {
@@ -30,6 +31,7 @@ export default class Login extends Component {
   render () {
     return (
       <div className="col-sm-6 col-sm-offset-3">
+        <Head title='Login' />
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">

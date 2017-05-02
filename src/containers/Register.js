@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
+import Head from '../components/Head'
 
 function setErrorMsg(error) {
   return {
@@ -13,15 +14,32 @@ export default class Register extends Component {
   state = { registerError: null }
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.store.authStore.createUser(this.email.value, this.password.value)
+    this.props.store.authStore.createUser(
+      this.email.value,
+      this.password.value,
+      this.displayName.value,
+      this.businessArea.value)
       .catch(e => this.setState(setErrorMsg(e)))
   }
 
   render () {
     return (
       <div className="col-sm-6 col-sm-offset-3">
+        <Head title='Register' />
         <h1>Register</h1>
         <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label>Name</label>
+            <input className="form-control" placeholder="Name" ref={(displayName) => this.displayName = displayName} />
+          </div>
+          <div className="form-group">
+            <label>Business Area</label>
+            <select className="form-control" ref={(businessArea) => this.businessArea = businessArea}>
+              <option>Global</option>
+              <option>Human Resources</option>
+              <option>Support</option>
+            </select>
+          </div>
           <div className="form-group">
             <label>Email</label>
             <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>

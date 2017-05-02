@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './containers/App'
-import './index.css'
+import { injectGlobal } from './config/styles'
 
 ReactDOM.render(
-  <App />,
+  <injectGlobal>
+    <App />
+  </injectGlobal>,
   document.getElementById('root')
 );

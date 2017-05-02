@@ -44,21 +44,24 @@ export default class AuthStore {
     return auth.sendPasswordResetEmail(email)
   }
 
-  createUser = (email, password) => {
+  createUser = (email, password, displayName, businessArea) => {
     return auth.createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-        return ref.child(`users/${user.uid}`)
-          .set({
-            email: user.email,
-            uid: user.uid
-          })
-          .then(user => {
-            return user
-          })
-      })
-      .catch(error => {
-        throw error
-      })
+      .then((user) => {
+          auth.currentUser.sendEmailVerification()
+          return ref.child(`users/${user.uid}`)
+            .set({
+              email: user.email,
+              uid: user.uid,
+              displayName: displayName,
+              businessArea: businessArea
+            })
+            .then(user => {
+              return user
+            })
+        })
+        .catch(error => {
+          throw error
+        })
   }
 
 
