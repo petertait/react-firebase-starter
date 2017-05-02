@@ -1,7 +1,5 @@
-# Auth with React Router V4 and Firebase V3
-This is an example repo for authenticating with Firebase and React Router.
-
-*Using React 15.4.0, React Router 4, and Firebase 3.6.1*
+# React Starter with Mobx and Firebase
+This is a starter React project with Firebase authentication, React Router 4 and Mobx.
 
 #### Features:
 * Protected Routes with React Router
@@ -11,7 +9,7 @@ This is an example repo for authenticating with Firebase and React Router.
 * Simple Boostrap UI
 
 #### Instructions:
-* Swap out the firebase config in ```config/constants``` with your own
-* ```npm install```
-* ```npm start```
+* Swap out the firebase config in ```config/firebase``` with your own
+* ```yarn```
+* ```yarn start```
 * Visit ```localhost:3000```
