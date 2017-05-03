@@ -1,4 +1,5 @@
 import { SiteClient } from 'datocms-client'
+import { observable } from 'mobx'
 
 export const DATOCMS_CLIENT = '99cfee362eccae210a4a'
 
@@ -6,7 +7,9 @@ export const home = '49120'
 export const about = '49210'
 export const blog = '49121'
 
-class dato {
+export default class DatoStore {
+  @observable articles = []
+
   constructor() {
     this.client = new SiteClient(DATOCMS_CLIENT)
   }
@@ -34,6 +37,19 @@ class dato {
       'filter[id]': page
     })
   )
-}
 
-export default new dato()
+  // getArticles() {
+  //   this.client.items.all('article')
+  //     .then((articles) => {
+  //       // this.setState({articles})
+  //       return articles
+  //     })
+  // }
+
+  // getArticles = () => (
+  //   this.client.items.all({ 'filter[type]': 'articles' })
+  //     .then((articles) => {
+  //       return articles
+  //     })
+  // )
+}
