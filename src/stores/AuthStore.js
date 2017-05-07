@@ -1,6 +1,8 @@
 import { observable, computed } from 'mobx'
 import { ref, auth } from '../config/firebase'
 
+
+
 export default class AuthStore {
   @observable user = null
   @observable authIsPending = true
@@ -9,8 +11,9 @@ export default class AuthStore {
     this.unwatchAuth = auth.onAuthStateChanged(user => {
       this.user = user
       this.authIsPending = false
-      // if(user) {}
+      if(user) {}
     })
+
   }
 
   watchAuth(onUser, onError) {
@@ -20,6 +23,18 @@ export default class AuthStore {
   user() {
     return this.user
   }
+
+  // currentUser() {
+  //   const user = auth.currentUser
+  //   const userID = user.uid
+  //   firebase.fetch(`users/${user}`, {
+  //     context: this
+  //   }).then(currentUser => {
+  //     return currentUser
+  //   }).catch(error => {
+  //     console.log(error)
+  //   })
+  // }
 
   // This should be called if we have multiple instances of AuthStore.
   // For example, if AuthStore lives inside an App component, call cleanup() in App's componentWillUnmount.
@@ -44,7 +59,7 @@ export default class AuthStore {
     return auth.sendPasswordResetEmail(email)
   }
 
-  createUser = (email, password, displayName, businessArea) => {
+  createUser = (email, password, displayName, team) => {
     return auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
           auth.currentUser.sendEmailVerification()
@@ -53,7 +68,7 @@ export default class AuthStore {
               email: user.email,
               uid: user.uid,
               displayName: displayName,
-              businessArea: businessArea
+              team: team
             })
             .then(user => {
               return user

@@ -18,7 +18,7 @@ export default class Register extends Component {
       this.email.value,
       this.password.value,
       this.displayName.value,
-      this.businessArea.value)
+      this.team.value)
       .catch(e => this.setState(setErrorMsg(e)))
   }
 
@@ -33,8 +33,8 @@ export default class Register extends Component {
             <input className="form-control" placeholder="Name" ref={(displayName) => this.displayName = displayName} />
           </div>
           <div className="form-group">
-            <label>Business Area</label>
-            <select className="form-control" ref={(businessArea) => this.businessArea = businessArea}>
+            <label>Team</label>
+            <select className="form-control" ref={(team) => this.team = team}>
               <option>Global</option>
               <option>Human Resources</option>
               <option>Support</option>

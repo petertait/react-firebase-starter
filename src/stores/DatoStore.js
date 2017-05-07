@@ -1,5 +1,5 @@
 import { SiteClient } from 'datocms-client'
-import { observable } from 'mobx'
+// import { observable, autorun, computed } from 'mobx'
 
 export const DATOCMS_CLIENT = '99cfee362eccae210a4a'
 
@@ -8,10 +8,18 @@ export const about = '49210'
 export const blog = '49121'
 
 export default class DatoStore {
-  @observable articles = []
+  // @observable articles = []
 
   constructor() {
     this.client = new SiteClient(DATOCMS_CLIENT)
+
+    // let articleList = autorun(() => {
+    //   this.client.items.all('8968')
+    //     .then((articles) => {
+    //       // this.setState({articles})
+    //       return this.articles = articles
+    //     })
+    // })
   }
 
   getPages = () => (

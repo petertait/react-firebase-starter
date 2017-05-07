@@ -1,46 +1,64 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router-dom'
+import { firebase } from '../../config/firebase'
+
 import Protected from '../../components/Protected'
 import Head from '../../components/Head'
-import DatoStore, { blog } from '../../stores/DatoStore'
+
+import CreateRequest from '../../components/DataRequests/CreateRequest'
+import RequestList from '../../components/DataRequests/RequestList'
 
 @Protected @inject('store') @observer
 export default class Dashboard extends Component {
-  constructor() {
-		super()
-
-    this.datoStore = new DatoStore()
+  constructor(props) {
+		super(props)
 
     this.state = {
-      page: [],
-      articles: []
+      requests: [],
+      loading: true,
+      currentUser: null
     }
 	}
 
   componentWillMount() {
-    this.datoStore.getPage(blog)
-      .then((page) => this.setState({page}))
+    const userID = this.props.store.authStore.user.uid
+    firebase.fetch(`users/${userID}`, {
+      context: this
+    }).then(currentUser => {
+      this.setState({currentUser: currentUser})
+    }).catch(error => {
+      console.log(error)
+    })
+  }
 
-    this.datoStore.getType('article')
-      .then((articles) => {
-        this.setState({articles})
-      })
+  componentDidMount() {
+    this.ref = firebase.syncState('dataRequests', {
+      context: this,
+      asArray: true,
+      state: 'requests',
+      then() {
+        this.setState({loading: false})
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    firebase.removeBinding(this.ref)
   }
 
   render () {
-    const { articles, page } = this.state
-    const articlesList = articles.map(({id, slug, title}) =>
-      <li key={id}>
-        <Link to={{pathname:`/${page.slug}/${slug}`, state:{id}}}>{title}</Link>
-      </li>
-    )
-
+    const { requests, currentUser } = this.state
     return (
       <div>
         <Head title='Dashboard' />
-        <h1>{page.title}</h1>
-        {articlesList}
+        <h1>Dashboard</h1>
+        {this.state.loading === true ?
+          <h3>Loading...</h3> :
+          <div>
+            <RequestList requests={requests} />
+            <CreateRequest currentUser={currentUser}/>
+          </div>
+        }
       </div>
     )
   }

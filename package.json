@@ -8,9 +8,9 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "datocms-client": "^0.3.21",
-    "firebase": "^3.6.9",
     "mobx": "^3.1.9",
     "mobx-react": "^4.1.8",
+    "re-base": "^2.7.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-helmet": "^5.0.3",
